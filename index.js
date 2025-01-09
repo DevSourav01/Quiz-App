@@ -118,10 +118,12 @@ const totalScore = questionsObj.length;
 const questionCountEl = document.querySelector("#questionCount"); // New element for question count
 const nextEl=document.querySelector('#next')
 
+
 // Sound effects
 const correctSound = new Audio("audio/correct-156911.mp3");
 const wrongSound = new Audio("audio/wrong-answer-129254.mp3");
 const quizCompleted = new Audio("audio/1-efek-sound-3-220030.mp3");
+
 
 
 // Initial rendering
@@ -166,11 +168,12 @@ function showQuestion() {
       // Apply colors to all buttons
       buttons.forEach((button) => {
         if (button.textContent === correctAnswer) {
-          button.style.backgroundColor = "green"; // Correct answer
+          button.style.backgroundColor = "#3bd458"; // Deep Green for correct answer
         } else {
-          button.style.backgroundColor = "red"; // Incorrect answer
+          button.style.backgroundColor = "#fe0032"; // Deep Red for incorrect answer
         }
       });
+      
 
       // Update the score on the DOM
       scoreEl.textContent = `Score: ${score}/${totalScore}`;
@@ -189,15 +192,44 @@ function nextQuestion() {
     
     optionEl.textContent = ""; // Clear options
     nextEl.remove()
-    quizCompleted.play()
+    quizCompleted.play();
+    displayFeedback();
   } else {
     showQuestion();
   }
 }
+// Function to display feedback
+function displayFeedback() {
+  const feedbackEl = document.createElement("div");
+  feedbackEl.id = "feedback";
 
+  // Generate feedback based on score
+  let feedbackMessage = "";
+  const percentage = (score / totalScore) * 100;
+
+  if (percentage >= 80) {
+    feedbackMessage = "Excellent work! You've shown great understanding and mastery of the material. Keep pushing forward!";
+} else if (percentage >= 50) {
+    feedbackMessage = "Great job! You're making solid progress. With a bit more practice, you'll be even stronger!";
+} else {
+    feedbackMessage = "Nice try! Every step counts. Review the material and give it another shot—you’re on your way to mastering this!";
+}
+
+
+  feedbackEl.textContent = `Feedback: ${feedbackMessage}`;
+  feedbackEl.style.textAlign = "center";
+  feedbackEl.style.marginTop = "20px";
+  feedbackEl.style.fontSize = "18px";
+  feedbackEl.style.color = "#007bff";
+  feedbackEl.style.fontWeight = "bold";
+
+  document.body.appendChild(feedbackEl);
+}
 //add a event  listner for next button
 
 nextEl.addEventListener('click', nextQuestion)
+
+
 
 
 // Function to shuffle options
